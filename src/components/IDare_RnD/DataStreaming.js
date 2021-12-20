@@ -5,7 +5,7 @@ import { connect, useDispatch } from "react-redux";
 import {
   test_action_creator,
   return_arr,
-  local_test_2,
+  getPlotData,
 } from "../../actions/iDare_dataStreaming";
 
 // import Plotly from "plotly.js-basic-dist";
@@ -21,8 +21,8 @@ const DataStreaming = ({
   test_action_creator,
   testReduxData,
   return_arr,
-  local_test_2,
-  storeStreamData,
+  getPlotData,
+  plots,
 }) => {
   const [plotData, setPlotData] = useState({
     x: [1, 2, 3, 4],
@@ -95,7 +95,7 @@ const DataStreaming = ({
       //   console.log(redData);
       //   console.log(redData_x);
 
-      for (let i = 1; i <= 100; i++) {
+      for (let i = 1; i <= 1000; i++) {
         if (x == 5 && i == 5) y_axis.push(5000);
         else if (x == 9 && i == 50) y_axis.push(0);
         else y_axis.push(i % 2 == 0 ? 3000 : 1000);
@@ -119,12 +119,8 @@ const DataStreaming = ({
   }, []);
 
   useEffect(async () => {
-    let data = await local_test_2();
-    console.log(data);
-    setPlotData3(data);
-    console.log(plotData3);
-    console.log(storeStreamData);
-  }, [local_test_2]);
+    await getPlotData();
+  }, [getPlotData]);
 
   return (
     <div className="container-fluid p-0">
@@ -134,32 +130,30 @@ const DataStreaming = ({
         </NavLink>
       </div>
 
-      <div className="plotly-js-2"> 
-        <Plot data={[plotData, plotDatas]} layout={{ title: "Basic Line Plot 1" }} />
-        <Plot data={[plotData2]} layout={{ title: "Basic Line Plot 2" }} />
+      <div className="plotly-js-2">
+        {/* <Plot
+          data={[plotData, plotDatas]}
+          layout={{ title: "Basic Line Plot 1" }}
+        />
+        <Plot data={[plotData2]} layout={{ title: "Basic Line Plot 2" }} /> */}
 
-        {storeStreamData && storeStreamData.length && (
+        <Fragment>
+          {plots && plots.length && JSON.stringify(plots[0].x.length)}<br/>
+          {plots && plots.length && JSON.stringify(plots[0].y.length)}
+        </Fragment>
+
+        {plots && plots.length && (
           <Fragment>
-            <Plot
+            {/* <Plot
               data={[
-                storeStreamData[0], storeStreamData[1], storeStreamData[2]
+                plots[0],
+                plots[1],
+                plots[2],
               ]}
-            />
-            <Plot
-              data={[
-                storeStreamData[0]
-              ]}
-            />
-            <Plot
-              data={[
-                storeStreamData[1]
-              ]}
-            />
-            <Plot
-              data={[
-                storeStreamData[2]
-              ]}
-            />
+            /> */}
+            <Plot data={[plots[0]]} />
+            <Plot data={[plots[1]]} />
+            <Plot data={[plots[2]]} />
           </Fragment>
         )}
       </div>
@@ -169,7 +163,7 @@ const DataStreaming = ({
 
 const mapStateToProps = (state) => ({
   testReduxData: state.testReduxData,
-  storeStreamData: state.storeStreamData,
+  plots: state.plots.plots,
 });
 
 // const mapDispatchToProps = (dispatch) => ({
@@ -179,5 +173,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   test_action_creator,
   return_arr,
-  local_test_2,
+  getPlotData,
 })(DataStreaming);

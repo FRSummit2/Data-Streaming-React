@@ -9,6 +9,7 @@ import { createStore, compose, applyMiddleware } from "redux";
 import allReducer from "./reducer";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import logger from "redux-logger"
 
 // const store = createStore(
 //   allReducer,
@@ -18,7 +19,7 @@ import thunk from "redux-thunk";
 const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 function configureStore() {
-  return createStore(allReducer, reduxDevTools(applyMiddleware(thunk)));
+  return createStore(allReducer, reduxDevTools(applyMiddleware(logger, thunk)));
 }
 
 const store = configureStore();

@@ -1,13 +1,13 @@
 import csvTransectionReducer from "./csvTransection";
 import testReduxDataReducer from "./testReduxData";
-import storeStreamData from './dataStreaming'
+import plots from './dataStreaming'
 
 import {combineReducers} from 'redux'
 
 const allReducer = combineReducers({
     csvTransection: csvTransectionReducer,
     testReduxData: testReduxDataReducer,
-    storeStreamData: storeStreamData,
+    plots,
 });
 
 export default allReducer;

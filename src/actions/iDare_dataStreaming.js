@@ -27,33 +27,59 @@ export const return_arr = () => (dispatch) => {
   return data;
 };
 
-export const local_test_2 = () => async (dispatch) => {
-
+export const getPlotData = () => async (dispatch) => {
   try {
     const { data } = await axios.get("test_1");
-    console.log(data);
-
-    let dt = []
-    let dt_m = []
-    data.forEach((element, index) => {
-        console.log(element)
-        if(index == 0)  dt.push(element)
-        dt_m.push(element)
-    });
-    console.log(dt)
-    console.log(dt_m)
 
     dispatch({
-      type: "STREAM_DATA",
+      type: "SET_PLOT_INITIAL_DATA",
       payload: data,
     });
+
+    let isMoreDataAvailable = true;
+
+    for (let i = 0; i < 20; i++) {
+      // setTimeout(async () => {
+      //   try {
+         
+      //   } catch (error) {}
+      // }, 3000);
+      const { data } = await axios.get("more_data");
+
+      dispatch({
+        type: "ADD_MORE_PLOT_DATA",
+        payload: data,
+      });
+    }
+
+    // let x = 0;
+    // while (x < 20) {
+    //   setTimeout(async () => {
+    //     try {
+    //       const { data } = await axios.get("more_data");
+
+    //       dispatch({
+    //         type: "ADD_MORE_PLOT_DATA",
+    //         payload: data,
+    //       });
+    //     } catch (error) {}
+    //   }, 3000);
+    //   x++
+    // }
   } catch (error) {
     dispatch({
-      type: "STREAM_DATA",
-      payload: [],
+      type: "SET_PLOT_INITIAL_DATA",
+      payload: null,
     });
     console.log(error);
   }
 
   //   return data;
+};
+
+export const update_local_test_2 = (data) => async (dispatch) => {
+  dispatch({
+    type: "UPDATE_STREAM_DATA",
+    payload: data,
+  });
 };
