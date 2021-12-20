@@ -124,17 +124,7 @@ const Page1 = () => {
             </div>
 
             <div className="row m-0 custom-row">
-                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('load-stream')}>Load Stream Data</button>
                 <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => goToLoadPage()}>Load Page</button>
-                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('simple-list-demo')}>Simple List Demo</button>
-                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('simple-grid-demo')}>Simple Grid Demo</button>
-                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('custom-window-demo')}>Custom Window Demo</button>
-
-                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('render-html')}>Chart Plotly</button>
-                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('basic-charts')}>Basic Chart</button>
-                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('statistical-charts')}>Statistical Charts</button>
-                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('animations')}>Animations</button>
-                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('map-chart')}>Map Chart</button>
             </div>
 
             <hr/>
@@ -142,7 +132,7 @@ const Page1 = () => {
             <div className="row m-0 custom-row">
                 <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('data-streaming')}>Data Stream</button>
             </div>
-            
+
             <hr/>
 
             <div className="container-fluid mt-4">

@@ -2,16 +2,6 @@ import { Switch, Route } from 'react-router-dom';
 import Page1 from '../components/Page1';
 import Page2 from '../components/Page2';
 import LoadPage from '../components/LoadPage';
-import SimpleListDemo from '../components/SimpleListDemo';
-import SimpleGridDemo from '../components/SimpleGridDemo';
-import CustomWindowDemo from '../components/CustomWindowDemo';
-import RanderHTML from '../components/RanderHTML';
-import LoadStreamData from '../components/LoadStreamData';
-
-import BasicCharts from '../components/Plotly/BasicCharts';
-import StatisticalCharts from '../components/Plotly/StatisticalCharts';
-import Animations from '../components/Plotly/Animations';
-import Maps from '../components/Plotly/Maps';
 
 // IDARE RnD
 import DataStreaming from '../components/IDare_RnD/DataStreaming';
@@ -26,15 +16,6 @@ function Router() {
                 <Route exact path="/" component={Page1} />
                 <PublicRoute path="/page2" component={Page2} />
                 <PublicRoute path="/page3" component={LoadPage} />
-                <PublicRoute path="/load-stream" component={LoadStreamData} />
-                <PublicRoute path="/simple-list-demo" component={SimpleListDemo} />
-                <PublicRoute path="/simple-grid-demo" component={SimpleGridDemo} />
-                <PublicRoute path="/custom-window-demo" component={CustomWindowDemo} />
-                <PublicRoute path="/render-html" component={RanderHTML} />
-                <PublicRoute path="/basic-charts" component={BasicCharts} />
-                <PublicRoute path="/statistical-charts" component={StatisticalCharts} />
-                <PublicRoute path="/animations" component={Animations} />
-                <PublicRoute path="/map-chart" component={Maps} />
 
                 {/* IDARE RnD */}
                 <PublicRoute path="/data-streaming" component={DataStreaming} />
