@@ -14,12 +14,12 @@ const plots = (state = initialState, action) => {
         // debugger
         // console.clear()
         console.log("DATA_UPDATE_SUCCESS")
-        console.log(state.plots)
+        // console.log(state.plots)
         // console.log(state.plots[0])
         // console.log(state.plots[0].x.length)
         // console.log(state.plots[0].y.length)
-        console.log(state.plots[2].y)
-        console.log(action.payload[2].y)
+        // console.log(state.plots[2].y)
+        // console.log(action.payload[2].y)
       return {
         ...state,
         plots: [

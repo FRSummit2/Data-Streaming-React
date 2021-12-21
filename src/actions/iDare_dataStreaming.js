@@ -1,5 +1,8 @@
 import axios from "axios";
+import {y_all} from './dummy_data'
+
 axios.defaults.baseURL = "http://localhost:4002";
+
 
 export const test_action_creator = (endpoient) => async (dispatch) => {
   console.clear();
@@ -61,15 +64,45 @@ export const getPlotData = () => async (dispatch) => {
 
     let isMoreDataAvailable = true;
 
-    for (let i = 2; i < 7; i++) {
+    let x_cnt = 5597
+
+    for (let i = 2; i < 100; i++) {
       // setTimeout(async () => {
       //   try {
          
       //   } catch (error) {}
       // }, 3000);
       // const { data } = await axios.get("more_data");
-      const { data } = await axios.get("dt_test_" + i);
+      let param = i < 7 ? i : 6
+      let { data } = await axios.get("dt_test_" + param);
       console.log(data)
+
+      let dt = [
+        {
+          x: [],
+          y: y_all
+        },
+        {
+          x: [],
+          y: []
+        },
+        {
+          x: [],
+          y: []
+        }
+      ]
+
+      if(i > 6) {
+        for(let m=0; m< 5600; m++) {
+          // console.log(dt)
+          // console.log(dt[0].x)
+          dt[0].x.push(x_cnt)
+          x_cnt++
+        }
+        console.log(dt)
+        console.log(x_cnt)
+        data = dt
+      }
 
       dispatch({
         type: "ADD_MORE_PLOT_DATA",
