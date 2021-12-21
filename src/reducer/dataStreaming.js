@@ -12,7 +12,7 @@ const plots = (state = initialState, action) => {
 
     case "ADD_MORE_PLOT_DATA":
         // debugger
-        console.clear()
+        // console.clear()
         console.log("DATA_UPDATE_SUCCESS")
         console.log(state.plots[0].x.length)
       return {

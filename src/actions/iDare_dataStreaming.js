@@ -31,6 +31,25 @@ export const getPlotData = () => async (dispatch) => {
   try {
     const { data } = await axios.get("test_1");
 
+
+    setTimeout(() => {
+      console.clear()
+      console.log(data)
+      data.forEach(element => {
+        console.log(element)
+        let data_x = []
+        let data_y = []
+        element.x.forEach((e, index) => {
+          if(index > 6000 && index < 7001) {
+            data_x.push(element.x[index])
+            data_y.push(element.y[index])
+          }
+        })
+        console.log(data_x)
+        console.log(data_y)
+      });
+    }, 3000)
+
     dispatch({
       type: "SET_PLOT_INITIAL_DATA",
       payload: data,
