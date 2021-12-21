@@ -29,26 +29,30 @@ export const return_arr = () => (dispatch) => {
 
 export const getPlotData = () => async (dispatch) => {
   try {
-    const { data } = await axios.get("test_1");
+    // debugger
+    console.clear()
+    // const { data } = await axios.get("test_1");
+    const { data } = await axios.get("dt_test_1");
+    console.log(data)
 
 
-    setTimeout(() => {
-      console.clear()
-      console.log(data)
-      data.forEach(element => {
-        console.log(element)
-        let data_x = []
-        let data_y = []
-        element.x.forEach((e, index) => {
-          if(index > 6000 && index < 7001) {
-            data_x.push(element.x[index])
-            data_y.push(element.y[index])
-          }
-        })
-        console.log(data_x)
-        console.log(data_y)
-      });
-    }, 3000)
+    // setTimeout(() => {
+    //   console.clear()
+    //   console.log(data)
+    //   data.forEach(element => {
+    //     console.log(element)
+    //     let data_x = []
+    //     let data_y = []
+    //     element.x.forEach((e, index) => {
+    //       if(index > 6000 && index < 7001) {
+    //         data_x.push(element.x[index])
+    //         data_y.push(element.y[index])
+    //       }
+    //     })
+    //     console.log(data_x)
+    //     console.log(data_y)
+    //   });
+    // }, 3000)
 
     dispatch({
       type: "SET_PLOT_INITIAL_DATA",
@@ -57,13 +61,15 @@ export const getPlotData = () => async (dispatch) => {
 
     let isMoreDataAvailable = true;
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 2; i < 7; i++) {
       // setTimeout(async () => {
       //   try {
          
       //   } catch (error) {}
       // }, 3000);
-      const { data } = await axios.get("more_data");
+      // const { data } = await axios.get("more_data");
+      const { data } = await axios.get("dt_test_" + i);
+      console.log(data)
 
       dispatch({
         type: "ADD_MORE_PLOT_DATA",
