@@ -75,7 +75,7 @@ export const getPlotData = () => async (dispatch) => {
       // const { data } = await axios.get("more_data");
       let param = i < 7 ? i : 6
       let { data } = await axios.get("dt_test_" + param);
-      console.log(data)
+      // console.log(data)
 
       let dt = [
         {
@@ -99,8 +99,8 @@ export const getPlotData = () => async (dispatch) => {
           dt[0].x.push(x_cnt)
           x_cnt++
         }
-        console.log(dt)
-        console.log(x_cnt)
+        // console.log(dt)
+        // console.log(x_cnt)
         data = dt
       }
 
