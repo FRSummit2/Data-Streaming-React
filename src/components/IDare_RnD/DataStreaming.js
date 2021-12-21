@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import {
   test_action_creator,
   return_arr,
@@ -24,24 +24,24 @@ const DataStreaming = ({
   getPlotData,
   plots,
 }) => {
-  const [plotData, setPlotData] = useState({
-    x: [1, 2, 3, 4],
-    y: [10, 15, 13, 17],
-    type: "scatter",
-  });
+  // const [plotData, setPlotData] = useState({
+  //   x: [1, 2, 3, 4],
+  //   y: [10, 15, 13, 17],
+  //   type: "scatter",
+  // });
 
-  const [plotDatas, setPlotDatas] = useState(
-    // {
-    //     x: [1, 2, 3, 4],
-    //     y: [10, 15, 13, 17],
-    //     type: "scatter",
-    // },
-    {
-      x: [5, 6, 7, 8],
-      y: [100, 150, 130, 170],
-      type: "scatter",
-    }
-  );
+  // const [plotDatas, setPlotDatas] = useState(
+  //   // {
+  //   //     x: [1, 2, 3, 4],
+  //   //     y: [10, 15, 13, 17],
+  //   //     type: "scatter",
+  //   // },
+  //   {
+  //     x: [5, 6, 7, 8],
+  //     y: [100, 150, 130, 170],
+  //     type: "scatter",
+  //   }
+  // );
 
   const [plotData2, setPlotData2] = useState({
     x: [1, 2, 3, 4],
@@ -49,7 +49,7 @@ const DataStreaming = ({
     type: "scatter",
   });
 
-  const [plotData3, setPlotData3] = useState([]);
+  // const [plotData3, setPlotData3] = useState([]);
 
   const [redData_y, setRedDataY] = useState([]);
   const [redData_x, setRedDataX] = useState([]);
@@ -72,7 +72,7 @@ const DataStreaming = ({
     test_action_creator("small_csv_50000");
   }, [test_action_creator]);
 
-  useEffect(async () => {
+  useEffect(() => {
     let y_axis = redData_y;
     let x_axis = redData_x;
 
@@ -96,9 +96,9 @@ const DataStreaming = ({
       //   console.log(redData_x);
 
       for (let i = 1; i <= 1000; i++) {
-        if (x == 5 && i == 5) y_axis.push(5000);
-        else if (x == 9 && i == 50) y_axis.push(0);
-        else y_axis.push(i % 2 == 0 ? 3000 : 1000);
+        if (x === 5 && i === 5) y_axis.push(5000);
+        else if (x === 9 && i === 50) y_axis.push(0);
+        else y_axis.push(i % 2 === 0 ? 3000 : 1000);
         x_axis.push(x + i);
         // console.log(x + '    ' + i)
       }

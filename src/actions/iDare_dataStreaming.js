@@ -62,7 +62,7 @@ export const getPlotData = () => async (dispatch) => {
       payload: data,
     });
 
-    let isMoreDataAvailable = true;
+    // let isMoreDataAvailable = true;
 
     let x_cnt = 5597
 
