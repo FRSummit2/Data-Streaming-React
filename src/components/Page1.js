@@ -19,6 +19,7 @@ const Page1 = () => {
             <div className="row m-0 custom-row">
                 <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('data-streaming')}>Data Stream - Line Chart</button>
                 <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('bar-chart')}>Data Stream - Line Chart</button>
+                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('scrollable-line=chart')}>Scrollable- Line Chart</button>
             </div>
         </div>
     );
