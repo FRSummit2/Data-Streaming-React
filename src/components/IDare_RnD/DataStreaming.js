@@ -7,6 +7,10 @@ import {
   return_arr,
   getPlotData,
 } from "../../actions/iDare_dataStreaming";
+import CustomRecycledList from "../RecycleList/RecycledList";
+
+import RecycledList from "react-recycled-scrolling";
+import ImageRow from "../RecycleList/ImageRow";
 
 // import Plotly from "plotly.js-basic-dist";
 // import createPlotlyComponent from "react-plotly.js/factory";
@@ -129,6 +133,8 @@ const DataStreaming = ({
           Back to Home
         </NavLink>
       </div>
+      
+      <CustomRecycledList />
 
       <div className="plotly-js-2">
         {/* <Plot
@@ -138,7 +144,8 @@ const DataStreaming = ({
         <Plot data={[plotData2]} layout={{ title: "Basic Line Plot 2" }} /> */}
 
         <Fragment>
-          {plots && plots.length && JSON.stringify(plots[0].x.length)}<br/>
+          {plots && plots.length && JSON.stringify(plots[0].x.length)}
+          <br />
           {plots && plots.length && JSON.stringify(plots[0].y.length)}
         </Fragment>
 
@@ -164,6 +171,7 @@ const DataStreaming = ({
 const mapStateToProps = (state) => ({
   testReduxData: state.testReduxData,
   plots: state.plots.plots,
+  recycledListData: state.recycledListData ? state.recycledListData.data : null,
 });
 
 // const mapDispatchToProps = (dispatch) => ({

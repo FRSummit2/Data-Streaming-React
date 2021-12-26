@@ -1,11 +1,10 @@
 import axios from "axios";
-import {y_50K} from './dummy_data'
+import { y_100K } from "./dummy_data";
 
 axios.defaults.baseURL = "http://localhost:4002";
 
-
 export const test_action_creator = (endpoient) => async (dispatch) => {
-  console.clear();
+  // console.clear();
 
   try {
     const { data } = await axios.get(`/${endpoient}`);
@@ -33,11 +32,10 @@ export const return_arr = () => (dispatch) => {
 export const getPlotData = () => async (dispatch) => {
   try {
     // debugger
-    console.clear()
+    // console.clear();
     // const { data } = await axios.get("test_1");
-    const { data } = await axios.get("dt_test_50K");
-    console.log(data)
-
+    const { data } = await axios.get("dt_test_100K");
+    console.log(data);
 
     // setTimeout(() => {
     //   console.clear()
@@ -65,12 +63,13 @@ export const getPlotData = () => async (dispatch) => {
     // let isMoreDataAvailable = true;
 
     // let x_cnt = 5597
-    let x_cnt = 50001
+    let x_cnt = 100001;
 
-    for (let i = 0; i < 50; i++) {
+    // for (let i = 0; i <= 50; i++) { //PASSED FOR 5M
+    for (let i = 0; i <= 3; i++) {
       // setTimeout(async () => {
       //   try {
-         
+
       //   } catch (error) {}
       // }, 3000);
       // const { data } = await axios.get("more_data");
@@ -81,28 +80,28 @@ export const getPlotData = () => async (dispatch) => {
       let dt = [
         {
           x: [],
-          y: y_50K
+          y: y_100K,
         },
         {
           x: [],
-          y: []
+          y: [],
         },
         {
           x: [],
-          y: []
-        }
-      ]
+          y: [],
+        },
+      ];
 
-      if(i > 1) {
-        for(let m=0; m< 50000; m++) {
+      if (i > 1) {
+        for (let m = 0; m < 100000; m++) {
           // console.log(dt)
           // console.log(dt[0].x)
-          dt[0].x.push(x_cnt)
-          x_cnt++
+          dt[0].x.push(x_cnt);
+          x_cnt++;
         }
-        console.log(dt)
+        console.log(dt);
         // console.log(x_cnt)
-        data = dt
+        data = dt;
       }
 
       dispatch({
