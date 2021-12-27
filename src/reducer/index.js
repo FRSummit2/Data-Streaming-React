@@ -3,6 +3,7 @@ import testReduxDataReducer from "./testReduxData";
 import plots from './dataStreaming'
 import recycledListData from "./recycleListData";
 import scrollableLineChartReducerData from "./scrollableLineChart";
+import liveStreaming from './liveStreaming'
 
 import {combineReducers} from 'redux'
 
@@ -12,6 +13,7 @@ const allReducer = combineReducers({
     plots,
     recycledListData,
     scrollableLineChartReducerData,
+    liveStreaming
 });
 
 export default allReducer;

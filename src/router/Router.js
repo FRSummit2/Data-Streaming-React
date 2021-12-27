@@ -5,6 +5,7 @@ import Page1 from '../components/Page1';
 import DataStreaming from '../components/IDare_RnD/DataStreaming';
 import DataStreamingBarChart from '../components/IDare_RnD/DataStreamingBarChart';
 import ScrollableLineChart from '../components/IDare_RnD/ScrollableLineChart';
+import LiveStream from '../components/IDare_RnD/LiveStream';
 
 import PublicRoute from '../Utils/PublicRoute';
 
@@ -17,6 +18,7 @@ function Router() {
 
                 {/* IDARE RnD */}
                 <PublicRoute path="/data-streaming" component={DataStreaming} />
+                <PublicRoute path="/live-streaming" component={LiveStream} />
                 <PublicRoute path="/bar-chart" component={DataStreamingBarChart} />
                 <PublicRoute path="/scrollable-line=chart" component={ScrollableLineChart} />
             </Switch>

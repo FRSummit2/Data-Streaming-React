@@ -20,6 +20,7 @@ const Page1 = () => {
                 <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('data-streaming')}>Data Stream - Line Chart</button>
                 <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('bar-chart')}>Data Stream - Line Chart</button>
                 <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('scrollable-line=chart')}>Scrollable- Line Chart</button>
+                <button className="blue-btn-menu col-lg-3 col-md-2 col-sm-2" onClick={() => loadPage('live-streaming')}>Live Streaming</button>
             </div>
         </div>
     );
