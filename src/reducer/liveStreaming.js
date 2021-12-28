@@ -36,6 +36,12 @@ const plots = (state = initialState, action) => {
             },
           ],
         };
+        case "UPDATE_LIVE_STREAMING_DATA_2":
+        //   debugger
+          return {
+            ...state,
+            plots: action.payload,
+          };
     default:
       return state;
   }
