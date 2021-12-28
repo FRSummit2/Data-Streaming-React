@@ -13,10 +13,16 @@ import { connect } from "react-redux";
 import Plot from "react-plotly.js";
 import { Fragment } from "react";
 
-import { loadChartData } from "../../actions/scrollableLineChart";
-import { loadChartDataByScroll } from "../../actions/scrollableLineChart";
+import {
+  loadChartData,
+  loadChartDataByScroll,
+} from "../../actions/scrollableLineChart";
 
-const ScrollableLineChart = ({ loadChartData, plots, loadChartDataByScroll }) => {
+const ScrollableLineChart = ({
+  loadChartData,
+  plots,
+  loadChartDataByScroll,
+}) => {
   // debugger
   useEffect(async () => {
     await loadChartData();
@@ -28,9 +34,9 @@ const ScrollableLineChart = ({ loadChartData, plots, loadChartDataByScroll }) =>
 
   //===============================================================
   const scroll = useScrollHandler();
-  useEffect( async () => {
-    loadChartDataByScroll(scroll.scrollVal)
-  }, [loadChartDataByScroll, scroll.scrollVal])
+  useEffect(async () => {
+    loadChartDataByScroll(scroll.scrollVal);
+  }, [loadChartDataByScroll, scroll.scrollVal]);
 
   const mystyle_div = {
     position: "relative",
@@ -43,6 +49,50 @@ const ScrollableLineChart = ({ loadChartData, plots, loadChartDataByScroll }) =>
     whiteSpace: "nowrap",
     // borderBottom: '1px solid #000000'
   };
+  //===============================================================
+
+  //===============================================================
+  // const scrollTable = useTableScrollHandler();
+  const containerRef = React.useRef();
+
+  React.useEffect(() => {
+    const selector = document.getElementById("scroll-table");
+    const elementWeidth = 60
+    let scrollVal = 0
+    const onScroll = () => {
+      // const scrollCheck = window.scrollY > 10;
+      let scrollLeft = selector.scrollLeft;
+      // let scrollWidth = selector.scrollWidth; // TOTAL WIDTH
+      let scrolledValue = scrollLeft / elementWeidth;
+      scrollVal = Math.ceil(scrolledValue)
+    };
+
+    const destroyListener = createScrollStopListener(containerRef.current, () => {
+        console.log('onscrollstop');
+        console.log(scrollVal)
+    });
+    // return () => destroyListener();
+
+    selector.addEventListener("scroll", onScroll);
+    return () => {
+      destroyListener();
+      selector.removeEventListener("scroll", onScroll);
+    };
+}, []);
+
+  const table_ = {
+    width: '600px',
+    display: 'block',
+    position: 'relative',
+    overflowX: 'scroll'
+  };
+  const table_tr_th_ = {
+    padding: '0'
+  }
+  const table_tr_th_span = {
+    minWidth: '60px',
+    display: 'block'
+  }
   //===============================================================
 
   return (
@@ -58,6 +108,21 @@ const ScrollableLineChart = ({ loadChartData, plots, loadChartDataByScroll }) =>
       <Fragment>
         {plots && plots.length && JSON.stringify(plots[0].x.length)}
       </Fragment>
+      <hr />
+      {plots && plots.length && (
+        <Fragment>
+          <Plot data={[plots[0]]} />
+        </Fragment>
+      )}
+      <table id="scroll-table" className="table table-hover" style={table_} ref={containerRef}>
+        <tr>
+          {
+            Array(50).fill(null).map((_, index) => (
+              <th scope="col" key={index} style={table_tr_th_}><span style={table_tr_th_span}>{index} data</span></th>
+            ))
+          }
+        </tr>
+      </table>
       <hr />
       {plots && plots.length && (
         <Fragment>
@@ -91,7 +156,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadChartData: () => dispatch(loadChartData()),
-  loadChartDataByScroll: (arr) => dispatch(loadChartDataByScroll(arr))
+  loadChartDataByScroll: (arr) => dispatch(loadChartDataByScroll(arr)),
 });
 
 export default connect(
@@ -104,36 +169,104 @@ export default connect(
 //   {loadChartData, loadChartDataByScroll}
 // )(ScrollableLineChart);
 
+// ========================================================================================
+export const useTableScrollHandler = () => {
+  const [scroll, setScroll] = useState(1);
+  const [scrollVal, setScrollVal] = useState(1);
+
+  useEffect(() => {
+    const selector = document.getElementById("scroll-table");
+    let scrollValArr = []
+    const onScroll = () => {
+      const scrollCheck = window.scrollY > 10;
+      let scrollLeft = selector.scrollLeft;
+      let scrollWidth = selector.scrollWidth;
+      console.log(scrollLeft);
+      console.log(scrollWidth);
+      let scrolledValue = scrollLeft / 60;
+      console.log("selected item no : " + scrolledValue + '    ' + Math.ceil(scrolledValue));
+      setScrollVal(Math.ceil(scrolledValue));
+      // console.log(window.scrollY)
+      // console.log(scrollCheck)
+      setScroll(scrollCheck);
+
+      // document.getElementById("scroll-table").scrollTo(Math.ceil(scrolledValue), 0)
+    };
+
+    // var isScrolling;
+    // selector.addEventListener('scroll', function ( event ) {
+    //   window.clearTimeout( isScrolling );
+    //   isScrolling = setTimeout(function() {
+    //     console.log( 'Scrolling has stopped.'  + scrollVal);
+    //     // selector.scrollLeft = scrollVal
+    //   }, 66);
+    // }, false);
+
+    selector.addEventListener("scroll", onScroll);
+    return () => {
+      selector.removeEventListener("scroll", onScroll);
+      // console.log('Hello >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
+      // console.log('scrollCheck')
+    };
+  }, [scroll, scrollVal, setScroll, setScrollVal]);
+
+  return { scroll: scroll, scrollVal: scrollVal };
+}
 
 // ========================================================================================
 // Custom scroll tracker
 
 export const useScrollHandler = () => {
-    const [scroll, setScroll] = useState(1);
-    const [scrollVal, setScrollVal] = useState(1);
-  
-    useEffect(() => {
-      const onScroll = () => {
-        const scrollCheck = window.scrollY > 10;
-        let scrollTop = document.getElementById("scrollbar").scrollTop
-        let scrollheight = document.getElementById("scrollbar").scrollHeight
-        console.log(scrollTop);
-        console.log(scrollheight);
-        let scrolledValue = scrollTop / 24
-        console.log('selected item no : ' + scrolledValue);
-        setScrollVal(scrolledValue)
-        // console.log(window.scrollY)
-        // console.log(scrollCheck)
-        setScroll(scrollCheck);
-      };
-  
-      const selector = document.getElementById("scrollbar");
-      selector.addEventListener("scroll", onScroll);
-      return () => {
-        selector.removeEventListener("scroll", onScroll);
-        // console.log('scrollCheck')
-      };
-    }, [scroll, setScroll]);
-  
-    return {scroll: scroll, scrollVal: scrollVal};
+  const [scroll, setScroll] = useState(1);
+  const [scrollVal, setScrollVal] = useState(1);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollCheck = window.scrollY > 10;
+      let scrollTop = document.getElementById("scrollbar").scrollTop;
+      let scrollheight = document.getElementById("scrollbar").scrollHeight;
+      console.log(scrollTop);
+      console.log(scrollheight);
+      let scrolledValue = scrollTop / 24;
+      console.log("selected item no : " + scrolledValue);
+      setScrollVal(scrolledValue);
+      // console.log(window.scrollY)
+      // console.log(scrollCheck)
+      setScroll(scrollCheck);
+    };
+
+    const selector = document.getElementById("scrollbar");
+    selector.addEventListener("scroll", onScroll);
+    return () => {
+      selector.removeEventListener("scroll", onScroll);
+      // console.log('scrollCheck')
+    };
+  }, [scroll, setScroll]);
+
+  return { scroll: scroll, scrollVal: scrollVal };
+};
+
+
+
+
+const createScrollStopListener = (element, callback, timeout) => {
+  let removed = false;
+  let handle = null;
+  const onScroll = () => {
+      if (handle) {
+           clearTimeout(handle);
+      }
+      handle = setTimeout(callback, timeout || 200); // default 200 ms
   };
+  element.addEventListener('scroll', onScroll);
+  return () => {
+      if (removed) {
+          return;
+      }
+      removed = true;
+      if (handle) {
+        clearTimeout(handle);
+      }
+    element.removeEventListener('scroll', onScroll);
+  };
+};
