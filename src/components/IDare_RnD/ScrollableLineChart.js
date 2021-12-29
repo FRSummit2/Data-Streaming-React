@@ -4,23 +4,33 @@ import { Bar, Line } from "react-chartjs-2";
 
 import { connect } from "react-redux";
 
+import RecycledList from "react-recycled-scrolling";
+import ScrollableLineChartRecycleList from "./ScrollableLineChartRecycleList";
+
 // import Plotly from "plotly.js-basic-dist";
 // import createPlotlyComponent from "react-plotly.js/factory";
 // const Plot = createPlotlyComponent(Plotly);
 
 // const service = new Service()
 
+
+
 import Plot from "react-plotly.js";
 import { Fragment } from "react";
 
 import {
   loadChartData,
+  loadChartInitialData,
   loadChartDataByScroll,
 } from "../../actions/scrollableLineChart";
+
 
 const ScrollableLineChart = ({
   loadChartData,
   plots,
+  recycled_list_data_arr,
+  table_data,
+  loadChartInitialData,
   loadChartDataByScroll,
 }) => {
   // debugger
@@ -34,9 +44,6 @@ const ScrollableLineChart = ({
 
   //===============================================================
   const scroll = useScrollHandler();
-  useEffect(async () => {
-    loadChartDataByScroll(scroll.scrollVal);
-  }, [loadChartDataByScroll, scroll.scrollVal]);
 
   const mystyle_div = {
     position: "relative",
@@ -52,25 +59,37 @@ const ScrollableLineChart = ({
   //===============================================================
 
   //===============================================================
+  // TABLE SCROLL EVENT
+
+  // const [scrolledSpanWeidth, setScrolledSpanWeidth] = useState(0)
+
   // const scrollTable = useTableScrollHandler();
+  useEffect(async () => {
+    loadChartInitialData();
+    // setScrolledSpanWeidth(40 * 60 * recycled_list_data_arr)
+    // alert(recycled_list_data_arr.length)
+  }, [loadChartInitialData]);
+
   const containerRef = React.useRef();
 
   React.useEffect(() => {
     const selector = document.getElementById("scroll-table");
-    const elementWeidth = 60
-    let scrollVal = 0
+    const elementWeidth = 40;
+    let scrollVal = 0;
     const onScroll = () => {
-      // const scrollCheck = window.scrollY > 10;
       let scrollLeft = selector.scrollLeft;
-      // let scrollWidth = selector.scrollWidth; // TOTAL WIDTH
       let scrolledValue = scrollLeft / elementWeidth;
-      scrollVal = Math.ceil(scrolledValue)
+      scrollVal = Math.ceil(scrolledValue);
     };
 
-    const destroyListener = createScrollStopListener(containerRef.current, () => {
-        console.log('onscrollstop');
-        console.log(scrollVal)
-    });
+    const destroyListener = createScrollStopListener(
+      containerRef.current,
+      () => {
+        console.log("onscrollstop");
+        console.log(scrollVal);
+        loadChartDataByScroll(scrollVal);
+      }
+    );
     // return () => destroyListener();
 
     selector.addEventListener("scroll", onScroll);
@@ -78,25 +97,12 @@ const ScrollableLineChart = ({
       destroyListener();
       selector.removeEventListener("scroll", onScroll);
     };
-}, []);
+  }, []);
 
-  const table_ = {
-    width: '600px',
-    display: 'block',
-    position: 'relative',
-    overflowX: 'scroll'
-  };
-  const table_tr_th_ = {
-    padding: '0'
-  }
-  const table_tr_th_span = {
-    minWidth: '60px',
-    display: 'block'
-  }
   //===============================================================
 
   return (
-    <div className="container-fluid p-0">
+    <div className="container-fluid p-0 scrollable-line-chart">
       <div className="header p-3">
         <NavLink exact to="/">
           Back to Home
@@ -109,21 +115,29 @@ const ScrollableLineChart = ({
         {plots && plots.length && JSON.stringify(plots[0].x.length)}
       </Fragment>
       <hr />
-      {plots && plots.length && (
+      {/* =============================================================================== */}
+      {/* <Fragment>
+        Hello {table_data && table_data.length && JSON.stringify(table_data[0].x.length)}
+      </Fragment> */}
+      {table_data && table_data.length && (
         <Fragment>
-          <Plot data={[plots[0]]} />
+          <Plot data={[table_data[0]]} />
         </Fragment>
       )}
-      <table id="scroll-table" className="table table-hover" style={table_} ref={containerRef}>
-        <tr>
-          {
-            Array(50).fill(null).map((_, index) => (
-              <th scope="col" key={index} style={table_tr_th_}><span style={table_tr_th_span}>{index} data</span></th>
-            ))
-          }
-        </tr>
-      </table>
+      <div className="data-info">
+        <span>0</span>
+        <span>1M</span>
+      </div>
+      <div id="scroll-table" className="table table-hover" ref={containerRef}>
+          <div className="inside-span" style={{width: (((recycled_list_data_arr ? recycled_list_data_arr : 0) * 40) + 600) + 'px'}}></div>
+      </div>
+      <Fragment>
+        <br/>
+        Total Data array: {recycled_list_data_arr && recycled_list_data_arr}<br/>
+        {recycled_list_data_arr && ((recycled_list_data_arr * 40) + 600)}
+      </Fragment>
       <hr />
+      {/* =============================================================================== */}
       {plots && plots.length && (
         <Fragment>
           <Plot data={[plots[0]]} />
@@ -152,10 +166,17 @@ const mapStateToProps = (state) => ({
   plots: state.scrollableLineChartReducerData
     ? state.scrollableLineChartReducerData.data
     : null,
+  table_data: state.scrollableLineChartReducerData
+    ? state.scrollableLineChartReducerData.table_data
+    : null,
+  recycled_list_data_arr: state.scrollableLineChartReducerData
+    ? state.scrollableLineChartReducerData.data_arr
+    : null,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadChartData: () => dispatch(loadChartData()),
+  loadChartInitialData: () => dispatch(loadChartInitialData()),
   loadChartDataByScroll: (arr) => dispatch(loadChartDataByScroll(arr)),
 });
 
@@ -176,7 +197,7 @@ export const useTableScrollHandler = () => {
 
   useEffect(() => {
     const selector = document.getElementById("scroll-table");
-    let scrollValArr = []
+    let scrollValArr = [];
     const onScroll = () => {
       const scrollCheck = window.scrollY > 10;
       let scrollLeft = selector.scrollLeft;
@@ -184,7 +205,12 @@ export const useTableScrollHandler = () => {
       console.log(scrollLeft);
       console.log(scrollWidth);
       let scrolledValue = scrollLeft / 60;
-      console.log("selected item no : " + scrolledValue + '    ' + Math.ceil(scrolledValue));
+      console.log(
+        "selected item no : " +
+          scrolledValue +
+          "    " +
+          Math.ceil(scrolledValue)
+      );
       setScrollVal(Math.ceil(scrolledValue));
       // console.log(window.scrollY)
       // console.log(scrollCheck)
@@ -211,7 +237,7 @@ export const useTableScrollHandler = () => {
   }, [scroll, scrollVal, setScroll, setScrollVal]);
 
   return { scroll: scroll, scrollVal: scrollVal };
-}
+};
 
 // ========================================================================================
 // Custom scroll tracker
@@ -246,27 +272,24 @@ export const useScrollHandler = () => {
   return { scroll: scroll, scrollVal: scrollVal };
 };
 
-
-
-
 const createScrollStopListener = (element, callback, timeout) => {
   let removed = false;
   let handle = null;
   const onScroll = () => {
-      if (handle) {
-           clearTimeout(handle);
-      }
-      handle = setTimeout(callback, timeout || 200); // default 200 ms
+    if (handle) {
+      clearTimeout(handle);
+    }
+    handle = setTimeout(callback, timeout || 200); // default 200 ms
   };
-  element.addEventListener('scroll', onScroll);
+  element.addEventListener("scroll", onScroll);
   return () => {
-      if (removed) {
-          return;
-      }
-      removed = true;
-      if (handle) {
-        clearTimeout(handle);
-      }
-    element.removeEventListener('scroll', onScroll);
+    if (removed) {
+      return;
+    }
+    removed = true;
+    if (handle) {
+      clearTimeout(handle);
+    }
+    element.removeEventListener("scroll", onScroll);
   };
 };
